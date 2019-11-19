@@ -1,6 +1,5 @@
 #version 130								
-in vec2 fragCoord;
-out vec4 fragColor;
+uniform vec2 u_resolution;
 uniform float time;
 
 float map(vec3 p) {
@@ -21,11 +20,11 @@ float trace(vec3 original, vec3 ray) {
 
 void main()
 {
-	vec2 uv = fragCoord / gl_FragCoord.xy;
+	vec2 uv = u_resolution / gl_FragCoord.xy;
 	uv = uv * 2.0 - 1.0;
 	uv.x *= gl_FragCoord.x / gl_FragCoord.y;
-	vec3 r = normalize(vec3(uv, 1.0));
 	vec3 o = vec3(0.0, 0.0, time);
+	vec3 r = normalize(vec3(uv, 1.0));
 	float t = trace(o, r);
 	float fog = 1.0 / (1.0 + t * t * 0.1);
 	vec3 fc = vec3(fog);

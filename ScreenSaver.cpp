@@ -11,13 +11,12 @@ Jaewon Jeong, Heetae Yang
 #include "GLXtras.h"
 #include "Camera.h"
 
-int winWidth = 800, winHeight = 800;
+int winWidth = 800, winHeight = 450;
 Camera camera(winWidth / 2, winHeight, vec3(0, 0, 0), vec3(0, 0, -1), 30);
 
 // GPU identifiers
 GLuint vBuffer = 0;
 GLuint program = 0;
-float start = clock();
 
 void InitVertexBuffer() {
 	float pts[][2] = { {-1,-1},{-1,1},{1,1},{1,-1} }; // 'object'
@@ -27,19 +26,15 @@ void InitVertexBuffer() {
 }
 
 void Display(GLFWwindow* w) {
+	glClearColor(1, 1, 1, 1);
+	glClear(GL_COLOR_BUFFER_BIT);
 	glUseProgram(program);							// ensure correct program
 	glBindBuffer(GL_ARRAY_BUFFER, vBuffer);			// activate vertex buffer
-	float time = (clock() - start) / CLOCKS_PER_SEC;
 
-	GLint id = glGetAttribLocation(program, "point");
-	glEnableVertexAttribArray(id);
-	glVertexAttribPointer(id, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
-	
 	// Set vertex attribute pointers & uniforms
-	//VertexAttribPointer(program, "point", 2, 0, (void*)0);
-	SetUniform(program, "time", time);
+	VertexAttribPointer(program, "point", 2, 0, (void*)0);
 
-	//glDrawArrays(GL_QUADS, 0, 4);		            // display entire window
+	glDrawArrays(GL_TRIANGLES, 0, 4);		            // display entire window
 	glFlush();							            // flush GL ops
 }
 
