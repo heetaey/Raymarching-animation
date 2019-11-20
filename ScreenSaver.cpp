@@ -11,12 +11,13 @@ Jaewon Jeong, Heetae Yang
 #include "GLXtras.h"
 #include "Camera.h"
 
-int winWidth = 800, winHeight = 450;
+int winWidth = 800, winHeight = 800;
 Camera camera(winWidth / 2, winHeight, vec3(0, 0, 0), vec3(0, 0, -1), 30);
 
 // GPU identifiers
 GLuint vBuffer = 0;
 GLuint program = 0;
+float start = clock();
 
 void InitVertexBuffer() {
 	float pts[][2] = { {-1,-1},{-1,1},{1,1},{1,-1} }; // 'object'
@@ -30,11 +31,15 @@ void Display(GLFWwindow* w) {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glUseProgram(program);							// ensure correct program
 	glBindBuffer(GL_ARRAY_BUFFER, vBuffer);			// activate vertex buffer
+	float end = clock();
+
+	float time = (end - start) / CLOCKS_PER_SEC;
 
 	// Set vertex attribute pointers & uniforms
 	VertexAttribPointer(program, "point", 2, 0, (void*)0);
 
-	glDrawArrays(GL_TRIANGLES, 0, 4);		            // display entire window
+	SetUniform(program, "time", time);
+	glDrawArrays(GL_QUADS, 0, 4);	            // display entire window
 	glFlush();							            // flush GL ops
 }
 
@@ -94,8 +99,8 @@ int main() {												// application entry
 
 	while (!glfwWindowShouldClose(w)) {						// event loop
 		Display(w);
-		if (PrintGLErrors())								// test for runtime GL error
-			getchar();										// if so, pause
+		//if (PrintGLErrors())								// test for runtime GL error
+		//	getchar();										// if so, pause
 		glfwSwapBuffers(w);									// double-buffer is default
 		glfwPollEvents();
 	}
