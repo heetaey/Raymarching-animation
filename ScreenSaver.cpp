@@ -11,7 +11,7 @@ Jaewon Jeong, Heetae Yang
 #include "GLXtras.h"
 #include "Camera.h"
 
-int winWidth = 500, winHeight = 500;
+int winWidth = 800, winHeight = 800;
 Camera camera(winWidth / 2, winHeight, vec3(0, 0, 0), vec3(0, 0, -1), 30);
 
 // GPU identifiers
