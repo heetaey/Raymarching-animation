@@ -11,7 +11,7 @@ Jaewon Jeong, Heetae Yang
 #include "GLXtras.h"
 #include "Camera.h"
 
-int winWidth = 800, winHeight = 800;
+int winWidth = 500, winHeight = 500;
 Camera camera(winWidth / 2, winHeight, vec3(0, 0, 0), vec3(0, 0, -1), 30);
 
 // GPU identifiers
@@ -32,15 +32,19 @@ void Display(GLFWwindow* w) {
 	glUseProgram(program);							// ensure correct program
 	glBindBuffer(GL_ARRAY_BUFFER, vBuffer);			// activate vertex buffer
 	float end = clock();
-
 	float time = (end - start) / CLOCKS_PER_SEC;
+
+	int screenWidth, screenHeight;
+	glfwGetWindowSize(w, &screenWidth, &screenHeight);
 
 	// Set vertex attribute pointers & uniforms
 	VertexAttribPointer(program, "point", 2, 0, (void*)0);
 
 	SetUniform(program, "time", time);
-	glDrawArrays(GL_QUADS, 0, 4);	            // display entire window
-	glFlush();							            // flush GL ops
+	SetUniform(program, "windowWidth", (float)screenWidth);
+	SetUniform(program, "windowHeight", (float)screenHeight);
+	glDrawArrays(GL_QUADS, 0, 4);	    // display entire window
+	glFlush();							// flush GL ops
 }
 
 void Resize(GLFWwindow* w, int width, int height) {
