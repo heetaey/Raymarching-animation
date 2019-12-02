@@ -153,7 +153,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="PixelShader.glsl" />
-    <None Include="PixelShader1.glsl" />
     <None Include="VertexShader.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

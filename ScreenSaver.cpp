@@ -1,6 +1,7 @@
 /*	
 Seattle University, FQ2019
 CPSC 5700 - Computer Graphics
+Project - ScreenSaver
 Jaewon Jeong, Heetae Yang
 */
 
@@ -89,6 +90,7 @@ int main() {												// application entry
 	// following line will not compile unless glad.h >= OpenGLv4.3
 	glDebugMessageCallback(GlslError, NULL);
 
+	// Imports shaders from external files
 	int v = CompileShaderViaFile("VertexShader.glsl", GL_VERTEX_SHADER);
 	int p = CompileShaderViaFile("PixelShader.glsl", GL_FRAGMENT_SHADER);
 	program = LinkProgram(v, p);

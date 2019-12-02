@@ -35,8 +35,5 @@
     <None Include="VertexShader.glsl">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="PixelShader1.glsl">
-      <Filter>Source Files</Filter>
-    </None>
   </ItemGroup>
 </Project>
