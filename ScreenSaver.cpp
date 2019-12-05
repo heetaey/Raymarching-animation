@@ -12,7 +12,10 @@ Jaewon Jeong, Heetae Yang
 #include "GLXtras.h"
 #include "Camera.h"
 
+// Window size initialization
 int winWidth = 800, winHeight = 800;
+
+// Camera initialization with screen Width, screen Height, rotation, tranlation, and FOV
 Camera camera(winWidth / 2, winHeight, vec3(0, 0, 0), vec3(0, 0, -1), 30);
 
 // GPU identifiers
@@ -21,9 +24,9 @@ GLuint program = 0;
 float start = clock();
 
 void InitVertexBuffer() {
-	float pts[][2] = { {-1,-1},{-1,1},{1,1},{1,-1} }; // 'object'
-	glGenBuffers(1, &vBuffer);						// ID for GPU buffer
-	glBindBuffer(GL_ARRAY_BUFFER, vBuffer);			// make it active
+	float pts[][2] = { {-1,-1},{-1,1},{1,1},{1,-1} };	// 'object'
+	glGenBuffers(1, &vBuffer);							// ID for GPU buffer
+	glBindBuffer(GL_ARRAY_BUFFER, vBuffer);				// make it active
 	glBufferData(GL_ARRAY_BUFFER, sizeof(pts), pts, GL_STATIC_DRAW);
 }
 
@@ -32,9 +35,12 @@ void Display(GLFWwindow* w) {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glUseProgram(program);							// ensure correct program
 	glBindBuffer(GL_ARRAY_BUFFER, vBuffer);			// activate vertex buffer
+	
+	// Clocks implemented in order to calculate the movement of object by the time.
 	float end = clock();
 	float time = (end - start) / CLOCKS_PER_SEC;
 
+	// Set window size
 	int screenWidth, screenHeight;
 	glfwGetWindowSize(w, &screenWidth, &screenHeight);
 
@@ -48,6 +54,7 @@ void Display(GLFWwindow* w) {
 	glFlush();							// flush GL ops
 }
 
+// Resize to dynamically change the viewport whenever user changes window size
 void Resize(GLFWwindow* w, int width, int height) {
 	camera.Resize(width, height);
 	glViewport(0, 0, width, height);
@@ -81,6 +88,7 @@ int main() {												// application entry
 	if (!glfwInit())
 		return 1;
 	
+	// Creates a window with given sizes and name
 	GLFWwindow* w = glfwCreateWindow(winWidth, winHeight, "ScreenSaver", NULL, NULL);
 	if (!w)
 		return AppError("can't open window");
@@ -100,12 +108,12 @@ int main() {												// application entry
 
 	InitVertexBuffer();										// set GPU vertex memory
 	glfwSetKeyCallback(w, Keyboard);
-	glfwSetWindowSizeCallback(w, Resize);
+	glfwSetWindowSizeCallback(w, Resize);					// able to change the window size
 	glfwSwapInterval(1);
 
 	while (!glfwWindowShouldClose(w)) {						// event loop
 		Display(w);
-			if (PrintGLErrors())								// test for runtime GL error
+			if (PrintGLErrors())							// test for runtime GL error
 			getchar();										// if so, pause
 		glfwSwapBuffers(w);									// double-buffer is default
 		glfwPollEvents();
