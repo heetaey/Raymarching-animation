@@ -105,8 +105,8 @@ int main() {												// application entry
 
 	while (!glfwWindowShouldClose(w)) {						// event loop
 		Display(w);
-		//if (PrintGLErrors())								// test for runtime GL error
-		//	getchar();										// if so, pause
+			if (PrintGLErrors())								// test for runtime GL error
+			getchar();										// if so, pause
 		glfwSwapBuffers(w);									// double-buffer is default
 		glfwPollEvents();
 	}
