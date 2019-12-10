@@ -12,17 +12,10 @@ uniform float windowHeight;
 uniform float time;
 
 /**
- * Function converts HSV colors to RGB
- * Official HSV to RGB conversion: https://en.wikipedia.org/wiki/HSL_and_HSV#HSV_to_RGB
- */
-vec3 hsv2rgb (vec3 hsv) {
-	vec3 rgb = clamp(abs(mod(hsv.x*6.0+vec3(0.0,4.0,2.0),6.0)-3.0)-1.0, 0.0, 1.0 );
-	return hsv.z * mix( vec3(1.0), rgb, hsv.y);
-}
-
-/**
- * Creates spheres and repeat them; reduced the radius by 0.5
- *
+ * Signed distance function for a sphere; radius is 0.5 in this case.
+ * 
+ * Creates multiple equally spaced spheres.
+ * length() performs the 3D pythagoream theorem to see how far away the 'q' is.
  */
 float SDFsphere(vec3 p) {
 	vec3 q = fract(p) * 2.0 - 1.0;
@@ -31,7 +24,7 @@ float SDFsphere(vec3 p) {
 
 /**
  * Raymarching function
- * Receives the original and the ray and casts the ray outwards
+ * Receives the original and the ray and casts the ray outwards maximum i iterations
  * towards the object in the SDFsphere function by multiplying it by t.
  */
 float trace(vec3 original, vec3 ray) {
@@ -42,6 +35,15 @@ float trace(vec3 original, vec3 ray) {
 		t += d * 0.5;
 	}
 	return t;
+}
+
+/**
+ * Function converts HSV colors to RGB
+ * Official HSV to RGB conversion: https://en.wikipedia.org/wiki/HSL_and_HSV#HSV_to_RGB
+ */
+vec3 hsv2rgb (vec3 hsv) {
+	vec3 rgb = clamp(abs(mod(hsv.x*6.0+vec3(0.0,4.0,2.0),6.0)-3.0)-1.0, 0.0, 1.0 );
+	return hsv.z * mix(vec3(1.0), rgb, hsv.y);
 }
 
 void main()
@@ -67,12 +69,13 @@ void main()
 	// Raymarch: calculate the distance a ray moves into the scene before hitting something.
 	float t = trace(o, r);
 
-	// Calculate colors based on the angle
+	// Change colors based on the angle
 	vec3 p = o + t * r;
     float angle = atan(p.x, p.z) / PI / 2.0;
 
 	// Sets the color
     vec3 color = hsv2rgb(vec3(angle, 1.0, 1.0));
+
 
 	gl_FragColor = vec4(color / (1. + t * t * .1), 1.0);
 }
