@@ -1,3 +1,3 @@
-### CPSC5700 - Computer Graphics Project
+### Computer Graphics Project
 Creates an endlessly looping color changing spheres;
-Raymarching screen saver program
+Raymarching screen animation
